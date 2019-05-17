@@ -1,7 +1,7 @@
-
+#!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 
 import tensorflow as tf
@@ -13,32 +13,24 @@ from keras.layers import Flatten
 from keras.layers import Dense
 
 
-# In[2]:
+# In[5]:
 
 
 classifier = Sequential()
-# Input layer
+
 classifier.add(Conv2D(32, (3, 3), input_shape = (64, 64, 3), activation = 'relu'))
 
 
-# In[3]:
+# In[8]:
 
 
 classifier.add(MaxPooling2D(pool_size = (2, 2)))
-# Hidden layer 1
 classifier.add(Conv2D(32, (3, 3), activation = 'relu'))
 classifier.add(MaxPooling2D(pool_size = (2, 2)))
 
-# Hidden layer 2
-
-classifier.add(Conv2D(32, (3, 3), activation = 'relu'))
-classifier.add(MaxPooling2D(pool_size = (2, 2)))
-
-# Hidden layer 3
 classifier.add(Flatten())
 
-# Hidden layer 4
-classifier.add(Dense(activation = 'relu',units=128))
+classifier.add(Dense(activation = 'relu',units=128)) 
 classifier.add(Dense(activation = 'sigmoid',units=1))
 
 classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
@@ -46,7 +38,7 @@ classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = [
 classifier.summary()
 
 
-# In[4]:
+# In[10]:
 
 
 from keras.preprocessing.image import ImageDataGenerator
@@ -59,46 +51,36 @@ train_datagen = ImageDataGenerator(rescale = 1./255,
 test_datagen = ImageDataGenerator(rescale = 1./255)
 
 
-# In[5]:
+# In[11]:
 
 
-import os 
-os.getcwd()
-os.chdir('/home/telraswa/Desktop/Swapnil/manju_project/Brain_tumor')
-print(os.getcwd())
-
-
-# In[6]:
-
-
-training_set = train_datagen.flow_from_directory('/home/telraswa/Desktop/Swapnil/manju_project/Brain_tumor/train/',
+training_set = train_datagen.flow_from_directory('C:/Users/saidivya/Desktop/NA1/ass 5/Deep Learning Applications in/Deep Learning Applications in/code/Brain_tumor/train',
                                                  target_size = (64, 64),
                                                  batch_size = 32,
                                                  class_mode = 'binary')
 
-test_set = test_datagen.flow_from_directory('/home/telraswa/Desktop/Swapnil/manju_project/Brain_tumor/test/',
+test_set = test_datagen.flow_from_directory('C:/Users/saidivya/Desktop/NA1/ass 5/Deep Learning Applications in/Deep Learning Applications in/code/Brain_tumor/test/',
                                             target_size = (64, 64),
                                             batch_size = 32,
                                             class_mode = 'binary')
 
 
-# In[7]:
+# In[12]:
 
 
-classifier.fit_generator(training_set, steps_per_epoch=None, epochs=100, verbose=1, callbacks=None, validation_data=test_set, validation_steps=None, class_weight=None, max_queue_size=10, workers=1, use_multiprocessing=False, shuffle=True, initial_epoch=0)
-     
+classifier.fit_generator(training_set, steps_per_epoch=1, epochs=100, verbose=1, callbacks=None, validation_data=test_set, validation_steps=1, class_weight=None, max_queue_size=10, workers=1, use_multiprocessing=False, shuffle=True, initial_epoch=0)
 
 
-# In[9]:
+# In[13]:
 
 
 import numpy as np
 from keras.preprocessing import image
-test_image = image.load_img('/home/telraswa/Desktop/Swapnil/manju_project/TestImages/brain-tumors-fig2_large.jpg', target_size = (64, 64))
+test_image = image.load_img('C:/Users/saidivya/Desktop/NA1/ass 5/Deep Learning Applications in/Deep Learning Applications in/code/TestImages/ring-enhancing-tumor.jpg', target_size = (64, 64))
 test_image
 
 
-# In[10]:
+# In[14]:
 
 
 test_image = image.img_to_array(test_image)
@@ -107,20 +89,20 @@ test_image = np.expand_dims(test_image, axis = 0)
 test_image
 
 
-# In[11]:
+# In[15]:
 
 
 result = classifier.predict(test_image)
 result
 
 
-# In[12]:
+# In[16]:
 
 
 training_set.class_indices
 
 
-# In[13]:
+# In[17]:
 
 
 if result[0][0] == 0:
